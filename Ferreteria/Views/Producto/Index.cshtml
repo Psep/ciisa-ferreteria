@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Ferreteria.Models.Producto>
+
+<h1>Productos</h1>
+<p>
+    @Html.ActionLink("Crear nuevo producto", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idProducto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreProducto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nitProveedor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stockInventario)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idProducto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreProducto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nitProveedor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stockInventario)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.idProducto }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.idProducto })
+        </td>
+    </tr>
+}
+
+</table>

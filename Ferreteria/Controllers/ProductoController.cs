@@ -8,32 +8,27 @@ using System.Web.Mvc;
 
 namespace Ferreteria.Controllers
 {
-    public class HomeController : Controller
+    public class ProductoController : Controller
     {
-        private VentaRepository repository;
+        private ProductoRepository repository;
+        private List<Producto> productos;
 
-        // GET: Venta
+        // GET: Producto
         public ActionResult Index()
         {
-            this.repository = new VentaRepository();
-            List<Venta> ventas = this.repository.FindAll();
-
-            return View(model: ventas);
+            this.repository = new ProductoRepository();
+            this.productos = this.repository.FindAll();
+            Session["productos"] = this.productos;
+            return View(model: productos);
         }
 
-        // GET: Venta/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Venta/Create
+        // GET: Producto/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Venta/Create
+        // POST: Producto/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -49,13 +44,28 @@ namespace Ferreteria.Controllers
             }
         }
 
-        // GET: Venta/Edit/5
-        public ActionResult Edit(int id)
+        private ViewResult FindProductoById(int id)
         {
-            return View();
+            this.productos = Session["productos"] as List<Producto>;
+            List<Producto> busqueda = this.productos.FindAll(x => x.idProducto == id);
+
+            if (busqueda != null && busqueda.Count > 0)
+            {
+                return View(model: busqueda.ElementAt(0));
+            }
+            else
+            {
+                return View();
+            }
         }
 
-        // POST: Venta/Edit/5
+        // GET: Producto/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return this.FindProductoById(id);
+        }
+
+        // POST: Producto/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -71,13 +81,13 @@ namespace Ferreteria.Controllers
             }
         }
 
-        // GET: Venta/Delete/5
+        // GET: Producto/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return this.FindProductoById(id);
         }
 
-        // POST: Venta/Delete/5
+        // POST: Producto/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

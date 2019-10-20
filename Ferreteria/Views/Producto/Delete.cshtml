@@ -1,0 +1,50 @@
+﻿@model Ferreteria.Models.Producto
+
+<h3>¿Está seguro que desea eliminar esto?</h3>
+<div>
+    <h4>Producto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.idProducto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idProducto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nombreProducto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombreProducto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nitProveedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nitProveedor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stockInventario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockInventario)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Regresar a Lista de Productos", "Index")
+        </div>
+    }
+</div>
