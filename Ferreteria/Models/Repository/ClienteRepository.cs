@@ -23,7 +23,7 @@ namespace Ferreteria.Models.Repository
                 Cliente cliente = new Cliente();
                 cliente.idCliente = reader.GetInt32(0);
                 cliente.nombreCompleto = reader.GetString(1);
-                cliente.razonSocial = reader.GetString(2);
+                cliente.razonSocial = this.GetString(reader, 2);
                 cliente.direccion = reader.GetString(3);
                 cliente.email = reader.GetString(4);
                 cliente.numeroCelular = reader.GetInt32(5);

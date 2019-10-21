@@ -12,13 +12,38 @@ namespace Ferreteria.Controllers
     {
         private VentaRepository repository;
         private ProductoRepository productoRepository;
+        private ClienteRepository clienteRepository;
         private List<Venta> ventas;
+
+        private void loadClientes()
+        {
+            this.clienteRepository = new ClienteRepository();
+            List<Cliente> clientes = this.clienteRepository.FindAll();
+            ViewBag.ListaClientes = clientes;
+        }
 
         private void loadProductos()
         {
             this.productoRepository = new ProductoRepository();
             List<Producto> productos = this.productoRepository.FindAll();
             ViewBag.ListaProductos = productos;
+        }
+
+        private Venta CastVenta(FormCollection collection)
+        {
+            Venta venta = new Venta();
+            venta.idPedido = Convert.ToInt32(collection["idPedido"]);
+            venta.vendedor = collection["vendedor"];
+
+            Producto producto = new Producto();
+            producto.idProducto = Convert.ToInt32(collection["productos"]);
+            venta.producto = producto;
+
+            Cliente cliente = new Cliente();
+            cliente.idCliente = Convert.ToInt32(collection["clientes"]);
+            venta.comprador = cliente;
+
+            return venta;
         }
 
         // GET: Venta
@@ -33,6 +58,7 @@ namespace Ferreteria.Controllers
         // GET: Venta/Create
         public ActionResult Create()
         {
+            this.loadClientes();
             this.loadProductos();
             return View();
         }
@@ -43,7 +69,8 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                
+                this.repository = new VentaRepository();
+                this.repository.Save(this.CastVenta(collection));
 
                 return RedirectToAction("Index");
             }

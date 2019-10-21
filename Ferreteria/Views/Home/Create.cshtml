@@ -14,7 +14,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            <label for="productos" class="control-label col-md-2">Proveedores</label>
+            <label for="productos" class="control-label col-md-2">Producto</label>
             <div class="col-md-10">
                 <select id="productos" name="productos" class="form-control" required>
                     @{
@@ -38,8 +38,24 @@
         </div>
 
         <div class="form-group">
+            <label for="clientes" class="control-label col-md-2">Cliente</label>
+            <div class="col-md-10">
+                <select id="clientes" name="clientes" class="form-control" required>
+                    @{
+                        var listaClientes = ViewBag.ListaClientes;
+
+                        foreach (var item in listaClientes)
+                        {
+                            <option value="@item.idCliente">@item.nombreCompleto</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-default" />
             </div>
         </div>
     </div>

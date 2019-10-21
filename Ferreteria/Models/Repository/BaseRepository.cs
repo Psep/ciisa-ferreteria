@@ -29,5 +29,16 @@ namespace Ferreteria.Models.Repository
                 reader.Close();
             }
         }
+
+        protected string GetString(SqlDataReader reader, int position)
+        {
+            if (!reader.IsDBNull(position))
+            {
+                return reader.GetString(position);
+            } else
+            {
+                return null;
+            }
+        }
     }
 }
