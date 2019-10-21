@@ -46,6 +46,22 @@ namespace Ferreteria.Controllers
             return venta;
         }
 
+        private ViewResult FindVentaById(int id)
+        {
+            this.ventas = Session["ventas"] as List<Venta>;
+            List<Venta> busqueda = this.ventas.FindAll(x => x.idPedido == id);
+
+            if (busqueda != null && busqueda.Count > 0)
+            {
+                ViewBag.IdPedido = id;
+                return View(model: busqueda.ElementAt(0));
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         // GET: Venta
         public ActionResult Index()
         {
@@ -83,7 +99,9 @@ namespace Ferreteria.Controllers
         // GET: Venta/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            this.loadClientes();
+            this.loadProductos();
+            return this.FindVentaById(id);
         }
 
         // POST: Venta/Edit/5
@@ -92,7 +110,11 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                Venta venta = this.CastVenta(collection);
+                venta.idPedido = id;
+
+                this.repository = new VentaRepository();
+                this.repository.Update(venta);
 
                 return RedirectToAction("Index");
             }
