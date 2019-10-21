@@ -11,6 +11,7 @@ namespace Ferreteria.Controllers
     public class ProductoController : Controller
     {
         private ProductoRepository repository;
+        private ProveedorRepository proveedorRepository;
         private List<Producto> productos;
 
         // GET: Producto
@@ -25,6 +26,10 @@ namespace Ferreteria.Controllers
         // GET: Producto/Create
         public ActionResult Create()
         {
+            this.proveedorRepository = new ProveedorRepository();
+            List<Proveedor> proveedores = this.proveedorRepository.FindAll();
+            ViewBag.ListaProveedores = proveedores;
+
             return View();
         }
 
@@ -52,8 +57,7 @@ namespace Ferreteria.Controllers
             producto.nombreProducto = collection["nombreProducto"];
 
             Proveedor proveedor = new Proveedor();
-            proveedor.idProveedor = Convert.ToInt32(collection["idProveedor"]);
-            proveedor.nombreCompleto = collection["nombreProveedor"];
+            proveedor.idProveedor = Convert.ToInt32(collection["proveedores"]);
 
             producto.proveedor = proveedor;
             producto.stockInventario = Convert.ToInt32(collection["stockInventario"]);
