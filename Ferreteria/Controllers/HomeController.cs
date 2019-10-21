@@ -11,25 +11,29 @@ namespace Ferreteria.Controllers
     public class HomeController : Controller
     {
         private VentaRepository repository;
+        private ProductoRepository productoRepository;
+        private List<Venta> ventas;
+
+        private void loadProductos()
+        {
+            this.productoRepository = new ProductoRepository();
+            List<Producto> productos = this.productoRepository.FindAll();
+            ViewBag.ListaProductos = productos;
+        }
 
         // GET: Venta
         public ActionResult Index()
         {
             this.repository = new VentaRepository();
-            List<Venta> ventas = this.repository.FindAll();
-
+            this.ventas = this.repository.FindAll();
+            Session["ventas"] = this.ventas;
             return View(model: ventas);
-        }
-
-        // GET: Venta/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         // GET: Venta/Create
         public ActionResult Create()
         {
+            this.loadProductos();
             return View();
         }
 

@@ -1,7 +1,12 @@
 ﻿@model IEnumerable<Ferreteria.Models.Venta>
 
+@{ 
+    ViewBag.Title = "Ventas";
+}
+
+<h1>Ventas</h1>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nueva venta", "Create")
 </p>
 <table class="table">
     <tr>
@@ -9,7 +14,13 @@
             @Html.DisplayNameFor(model => model.idPedido)
         </th>
         <th>
+            Producto
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.vendedor)
+        </th>
+        <th>
+            Cliente
         </th>
         <th></th>
     </tr>
@@ -20,12 +31,17 @@
             @Html.DisplayFor(modelItem => item.idPedido)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.producto.nombreProducto)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.vendedor)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.DisplayFor(modelItem => item.comprador.nombreCompleto)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.idPedido }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.idPedido })
         </td>
     </tr>
 }
