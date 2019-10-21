@@ -26,9 +26,7 @@ namespace Ferreteria.Controllers
         // GET: Producto/Create
         public ActionResult Create()
         {
-            this.proveedorRepository = new ProveedorRepository();
-            List<Proveedor> proveedores = this.proveedorRepository.FindAll();
-            ViewBag.ListaProveedores = proveedores;
+            this.loadProveedores();
 
             return View();
         }
@@ -48,6 +46,13 @@ namespace Ferreteria.Controllers
             {
                 return View();
             }
+        }
+
+        private void loadProveedores()
+        {
+            this.proveedorRepository = new ProveedorRepository();
+            List<Proveedor> proveedores = this.proveedorRepository.FindAll();
+            ViewBag.ListaProveedores = proveedores;
         }
 
         private Producto CastProducto(FormCollection collection)
@@ -72,6 +77,7 @@ namespace Ferreteria.Controllers
 
             if (busqueda != null && busqueda.Count > 0)
             {
+                ViewBag.IdProducto = id;
                 return View(model: busqueda.ElementAt(0));
             }
             else
@@ -83,6 +89,7 @@ namespace Ferreteria.Controllers
         // GET: Producto/Edit/5
         public ActionResult Edit(int id)
         {
+            this.loadProveedores();
             return this.FindProductoById(id);
         }
 

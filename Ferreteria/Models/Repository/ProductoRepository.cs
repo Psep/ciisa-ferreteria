@@ -51,15 +51,31 @@ namespace Ferreteria.Models.Repository
             conn.Close();
         }
 
-        public Boolean Update(Producto producto)
+        public void Update(Producto producto)
         {
-            //TODO implementar
-            return true;
+            SqlConnection conn = this.GetConnection();
+            SqlCommand cmd = new SqlCommand("modificarProducto", connection: conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@IdProducto", SqlDbType.Int).Value = producto.idProducto;
+            cmd.Parameters.Add("@NombreProducto", SqlDbType.VarChar).Value = producto.nombreProducto;
+            cmd.Parameters.Add("@IdProveedor", SqlDbType.Int).Value = producto.proveedor.idProveedor;
+            cmd.Parameters.Add("@StockInventario", SqlDbType.Int).Value = producto.stockInventario;
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
-        public Boolean Delete(int id)
+        public void Delete(int id)
         {
-            return true;
+            SqlConnection conn = this.GetConnection();
+            SqlCommand cmd = new SqlCommand("eliminarProducto", connection: conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@IdProducto", SqlDbType.Int).Value = id;
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
     }
 }
