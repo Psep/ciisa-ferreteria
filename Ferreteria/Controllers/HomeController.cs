@@ -127,7 +127,7 @@ namespace Ferreteria.Controllers
         // GET: Venta/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return this.FindVentaById(id);
         }
 
         // POST: Venta/Delete/5
@@ -136,7 +136,8 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                this.repository = new VentaRepository();
+                this.repository.Delete(id);
 
                 return RedirectToAction("Index");
             }
