@@ -34,7 +34,8 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                this.repository = new ProductoRepository();
+                this.repository.Save(this.CastProducto(collection));
 
                 return RedirectToAction("Index");
             }
@@ -42,6 +43,17 @@ namespace Ferreteria.Controllers
             {
                 return View();
             }
+        }
+
+        private Producto CastProducto(FormCollection collection)
+        {
+            Producto producto = new Producto();
+            producto.idProducto = Convert.ToInt32(collection["idProducto"]);
+            producto.nombreProducto = collection["nombreProducto"];
+            producto.nitProveedor = Convert.ToInt32(collection["nitProveedor"]);
+            producto.stockInventario = Convert.ToInt32(collection["nitProveedor"]);
+
+            return producto;
         }
 
         private ViewResult FindProductoById(int id)
@@ -71,7 +83,10 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                Producto producto = this.CastProducto(collection);
+
+                this.repository = new ProductoRepository();
+                this.repository.Update(producto);
 
                 return RedirectToAction("Index");
             }

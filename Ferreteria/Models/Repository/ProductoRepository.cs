@@ -17,5 +17,17 @@ namespace Ferreteria.Models.Repository
 
             return productos;
         }
+
+        public Boolean Save(Producto producto)
+        {
+            //TODO implementar
+            return true;
+        }
+
+        public Boolean Update(Producto producto)
+        {
+            //TODO implementar
+            return true;
+        }
     }
 }
