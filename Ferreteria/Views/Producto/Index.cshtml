@@ -7,16 +7,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.idProducto)
+            ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.nombreProducto)
+            Nombre Producto
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.nitProveedor)
+            Proveedor
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.stockInventario)
+            Stock
         </th>
         <th></th>
     </tr>
@@ -30,7 +30,7 @@
             @Html.DisplayFor(modelItem => item.nombreProducto)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.nitProveedor)
+            @Html.DisplayFor(modelItem => item.proveedor.nombreCompleto)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.stockInventario)

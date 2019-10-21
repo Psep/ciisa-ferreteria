@@ -50,8 +50,13 @@ namespace Ferreteria.Controllers
             Producto producto = new Producto();
             producto.idProducto = Convert.ToInt32(collection["idProducto"]);
             producto.nombreProducto = collection["nombreProducto"];
-            producto.nitProveedor = Convert.ToInt32(collection["nitProveedor"]);
-            producto.stockInventario = Convert.ToInt32(collection["nitProveedor"]);
+
+            Proveedor proveedor = new Proveedor();
+            proveedor.idProveedor = Convert.ToInt32(collection["idProveedor"]);
+            proveedor.nombreCompleto = collection["nombreProveedor"];
+
+            producto.proveedor = proveedor;
+            producto.stockInventario = Convert.ToInt32(collection["stockInventario"]);
 
             return producto;
         }
@@ -84,6 +89,7 @@ namespace Ferreteria.Controllers
             try
             {
                 Producto producto = this.CastProducto(collection);
+                producto.idProducto = id;
 
                 this.repository = new ProductoRepository();
                 this.repository.Update(producto);
@@ -108,7 +114,8 @@ namespace Ferreteria.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                this.repository = new ProductoRepository();
+                this.repository.Delete(id);
 
                 return RedirectToAction("Index");
             }

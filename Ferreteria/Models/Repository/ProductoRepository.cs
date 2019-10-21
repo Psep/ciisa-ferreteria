@@ -1,19 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Ferreteria.Models.Repository
 {
-    public class ProductoRepository
+    public class ProductoRepository : BaseRepository
     {
         public List<Producto> FindAll()
         {
+            SqlConnection conn = this.GetConnection();
+            SqlCommand cmd = new SqlCommand("listarProductos", connection: conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
             List<Producto> productos = new List<Producto>();
-            Producto producto = new Producto(1, "Clavos", 1, 10);
-            Producto producto1 = new Producto(2, "Tornillos", 1, 5);
-            productos.Add(producto);
-            productos.Add(producto1);
+
+            while (reader.Read())
+            {
+                Producto producto = new Producto();
+                producto.idProducto = reader.GetInt32(0);
+                producto.nombreProducto = reader.GetString(1);
+
+                Proveedor proveedor = new Proveedor();
+                proveedor.idProveedor = reader.GetInt32(2);
+                proveedor.nombreCompleto = reader.GetString(3);
+                producto.proveedor = proveedor;
+
+                producto.stockInventario = reader.GetInt32(4);
+
+                productos.Add(producto);
+            }
+
+            this.CloseAll(conn, reader);
 
             return productos;
         }
@@ -27,6 +46,11 @@ namespace Ferreteria.Models.Repository
         public Boolean Update(Producto producto)
         {
             //TODO implementar
+            return true;
+        }
+
+        public Boolean Delete(int id)
+        {
             return true;
         }
     }
