@@ -1,0 +1,248 @@
+/*Modelo*/
+create database empresa;
+use empresa;
+
+create table clientes(
+IdCliente int identity(1,1) Primary Key,
+NombreCompleto varchar(150),
+RazonSocial varchar(150),
+Direccion varchar(150),
+Email varchar(150),
+NumCelular int
+);
+
+create table proveedores(
+IdProveedor int identity(1,1) Primary Key,
+NombreCompleto varchar(150),
+RazonSocial varchar(150),
+Direccion varchar(150),
+Email varchar(150),
+NumCelular int
+);
+
+create table productos(
+IdProducto int identity(1,1) Primary Key,
+NombreProducto varchar(50),
+IdProveedor int FOREIGN KEY REFERENCES proveedores(IdProveedor),
+StockInventario int
+);
+
+create table ventas(
+IdPedido int identity(1,1) Primary Key,
+IdProducto int FOREIGN KEY REFERENCES productos(IdProducto),
+Vendedor varchar(100),
+IdCliente int FOREIGN KEY REFERENCES clientes(IdCliente)
+);
+
+create table TiposDescuento(
+IdTipoDescuento int identity(1,1) Primary Key,
+Descripcion varchar(50)
+);
+
+create table descuentos(
+IdDescuento int identity(1,1) Primary Key,
+PorcDscto float,
+IdProducto int FOREIGN KEY REFERENCES productos(IdProducto),
+IdTipoDescuento int FOREIGN KEY REFERENCES TiposDescuento(IdTipoDescuento)
+);
+
+create procedure insertarCliente
+@NombreCompleto as VARCHAR(150),
+@RazonSocial as varchar(150),
+@Direccion as varchar(150),
+@Email as varchar(150),
+@NumCelular as int
+AS
+BEGIN
+INSERT INTO clientes (NombreCompleto, RazonSocial, Direccion, Email, NumCelular) 
+VALUES (@NombreCompleto, @RazonSocial, @Direccion, @Email, @NumCelular)
+END
+
+create procedure insertarProveedor
+@NombreCompleto as VARCHAR(150),
+@RazonSocial as varchar(150),
+@Direccion as varchar(150),
+@Email as varchar(150),
+@NumCelular as int
+AS
+BEGIN
+INSERT INTO proveedores (NombreCompleto, RazonSocial, Direccion, Email, NumCelular) 
+VALUES (@NombreCompleto, @RazonSocial, @Direccion, @Email, @NumCelular)
+END
+
+create procedure insertarProducto
+@NombreProducto as varchar(50),
+@IdProveedor as int,
+@StockInventario as int
+AS
+BEGIN
+INSERT INTO productos (NombreProducto, IdProveedor, StockInventario) 
+VALUES (@NombreProducto, @IdProveedor, @StockInventario)
+END
+
+create procedure insertarVenta
+@IdProducto as int,
+@Vendedor as varchar(100),
+@IdCliente as int
+AS
+BEGIN
+INSERT INTO ventas (IdProducto, Vendedor, IdCliente) 
+VALUES (@IdProducto, @Vendedor, @IdCliente);
+END
+
+create procedure insertarDescuento
+@PorcDscto as float,
+@IdProducto as int,
+@IdTipoDescuento as int
+AS
+BEGIN
+INSERT INTO descuentos (PorcDscto, IdProducto, IdTipoDescuento) 
+VALUES (@PorcDscto, @IdProducto, @IdTipoDescuento);
+END
+
+create procedure insertarTipoDescuento
+@Descripcion as varchar(50)
+AS
+BEGIN
+INSERT INTO TiposDescuento (Descricion) 
+VALUES (@Descricion);
+END
+
+create procedure modificarCliente
+@IdCliente as int,
+@NombreCompleto as varchar(150),
+@RazonSocial as varchar(150),
+@Direccion as varchar(150),
+@Email as varchar(150),
+@NumCelular as int
+AS
+BEGIN
+UPDATE clientes SET NombreCompleto=@NombreCompleto, RazonSocial=@RazonSocial, Direccion=@Direccion, Email=@Email, NumCelular=@NumCelular
+WHERE IdCliente=@IdCliente;
+END
+
+create procedure modificarProveedor
+@IdProveedor as int,
+@NombreCompleto as varchar(150),
+@RazonSocial as varchar(150),
+@Direccion as varchar(150),
+@Email as varchar(150),
+@NumCelular as int
+AS
+BEGIN
+UPDATE proveedores SET NombreCompleto=@NombreCompleto, RazonSocial=@RazonSocial, Direccion=@Direccion, Email=@Email, NumCelular=@NumCelular
+WHERE IdProveedor=@IdProveedor;
+END
+
+create procedure modificarProducto
+@IdProducto as int,
+@NombreProducto as varchar(50),
+@IdProveedor as int,
+@StockInventario as int
+AS
+BEGIN
+UPDATE productos SET NombreProducto=@NombreProducto, IdProveedor=@IdProveedor, StockInventario=@StockInventario
+WHERE IdProducto=@IdProducto;
+END
+
+create procedure modificarVenta
+@IdPedido as int,
+@IdProducto as int,
+@Vendedor as varchar(100),
+@IdCliente as int
+AS
+BEGIN
+UPDATE ventas SET IdProducto=@IdProducto, Vendedor=@Vendedor, IdCliente=@IdCliente
+WHERE IdPedido=@IdPedido;
+END
+
+create procedure modificarDescuento
+@IdDescuento as int,
+@PorcDscto as float,
+@IdProducto as int,
+@IdTipoDescuento as int
+AS
+BEGIN
+UPDATE descuentos SET PorcDscto=@PorcDscto, IdProducto=@IdProducto, IdTipoDescuento=@IdTipoDescuento
+WHERE IdDescuento=@IdDescuento;
+END
+
+create procedure modificarTipoDescuento
+@IdTipoDescuento as int,
+@Descripcion as varchar(50)
+AS
+BEGIN
+UPDATE TiposDescuento SET Descripcion=@Descripcion
+WHERE IdTipoDescuento=@IdTipoDescuento;
+END
+
+create procedure eliminarCliente
+@IdCliente as int
+AS
+BEGIN
+DELETE FROM ventas WHERE IdCliente=@IdCliente;
+DELETE FROM clientes WHERE IdCliente=@IdCliente;
+END
+
+create procedure eliminarProveedor
+@IdProveedor as int
+AS
+BEGIN
+DELETE FROM productos WHERE IdProveedor=@IdProveedor;
+DELETE FROM proveedores WHERE IdProveedor=@IdProveedor;
+END
+
+create procedure eliminarProducto
+@IdProducto as int
+AS
+BEGIN
+DELETE FROM ventas WHERE IdProducto=@IdProducto;
+DELETE FROM descuentos WHERE IdProducto=@IdProducto;
+DELETE FROM productos WHERE IdProducto=@IdProducto;
+END
+
+create procedure eliminarVenta
+@IdPedido as int
+AS
+BEGIN
+DELETE FROM ventas WHERE IdPedido=@IdPedido;
+END
+
+create procedure eliminarDescuento
+@IdDescuento as int
+AS
+BEGIN
+DELETE FROM descuentos WHERE IdDescuento=@IdDescuento;
+END
+
+create procedure listarClientes
+AS
+BEGIN
+SELECT IdCliente, NombreCompleto, RazonSocial, Direccion, Email, NumCelular FROM Clientes
+END
+
+create procedure listarProveedores
+AS
+BEGIN
+SELECT IdProveedor, NombreCompleto, RazonSocial, Direccion, Email, NumCelular FROM proveedores ORDER BY IdProveedor ASC
+END
+
+create procedure listarVentas
+AS
+BEGIN
+SELECT v.IdPedido, v.IdProducto, p.NombreProducto, v.Vendedor, v.IdCliente, c.NombreCompleto as Nomcliente FROM ventas v 
+INNER JOIN productos p ON v.IdProducto=p.IdProducto
+INNER JOIN clientes c ON v.IdCliente=c.IdCliente
+ORDER BY v.IdPedido ASC
+END
+
+create procedure listarProductos
+AS
+BEGIN
+SELECT p.IdProducto, p.NombreProducto, pr.IdProveedor as idProveedor, pr.NombreCompleto AS nombreProveedor, p.StockInventario FROM productos p
+INNER JOIN proveedores pr ON p.IdProveedor=pr.IdProveedor
+ORDER BY IdProducto ASC
+END
+
+
+
